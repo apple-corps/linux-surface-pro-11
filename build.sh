@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 ROOTFS_URL=http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz
 DISK_IMAGE_NAME=arch-linux-arm-sp11.img
@@ -98,6 +98,7 @@ function arch_setup {
 	cp -r build/modules/lib/modules/* build/root/lib/modules/
 	# cp sp11-grab-fw.sh build/root/usr/local/sbin/sp11-grab-
         cp fetch_vivobook-s15_fw.sh build/root/usr/local/sbin/fetch_vivobook-s15_fw.sh
+        cp copy_firmware.service build/root/usr/local/sbin/copy_firmware.service
 
 	# Install a pacman hook to patch GRUB script and insert SP11 dtb
 	cp -r hooks build/root/etc/pacman.d/
@@ -223,3 +224,5 @@ prepare_disk_image
 attach_and_mount
 arch_setup
 unmount_and_detach
+
+set +x
