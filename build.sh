@@ -91,12 +91,13 @@ function arch_setup {
 	mkdir -p build/root/mnt/efi
 	mount ${loopdev}p1 build/root/mnt/efi
 
-	cp sp11-grab-fw.bat build/root/mnt/efi/
+	# cp sp11-grab-fw.bat build/root/mnt/efi/
 
 	# Copy kernel, modules, dtbs and firmware copy script
 	cp -r build/boot/* build/root/boot/
 	cp -r build/modules/lib/modules/* build/root/lib/modules/
-	cp sp11-grab-fw.sh build/root/usr/local/sbin/sp11-grab-fw
+	# cp sp11-grab-fw.sh build/root/usr/local/sbin/sp11-grab-
+        cp fetch_vivobook-s15_fw.sh build/root/usr/local/sbin/fetch_vivobook-s15_fw.sh
 
 	# Install a pacman hook to patch GRUB script and insert SP11 dtb
 	cp -r hooks build/root/etc/pacman.d/
@@ -151,7 +152,8 @@ function arch_setup {
 		# Current linux-firmware package's board-2.bin does not contain a matching device ID for SP11.
 		# On SP11 ath12k wants: bus=pci,vendor=17cb,device=1107,subsystem-vendor=17cb,subsystem-device=1107,qmi-chip-id=2,qmi-board-id=255
 		# This seems close enough: bus=pci,vendor=17cb,device=1107,subsystem-vendor=17cb,subsystem-device=3378,qmi-chip-id=2,qmi-board-id=255.bin
-		tmp=$(mktemp -d)
+		
+                tmp=$(mktemp -d)
 		pushd "$tmp"
 		python <(curl -sL "$BDENCODER_URL") --extract /lib/firmware/ath12k/WCN7850/hw2.0/board-2.bin
 		mv "bus=pci,vendor=17cb,device=1107,subsystem-vendor=17cb,subsystem-device=3378,qmi-chip-id=2,qmi-board-id=255.bin" /lib/firmware/ath12k/WCN7850/hw2.0/board.bin
